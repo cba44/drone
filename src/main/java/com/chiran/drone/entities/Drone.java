@@ -1,8 +1,10 @@
 package com.chiran.drone.entities;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,9 +22,10 @@ public class Drone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Size(max = 100)
+    @Column(unique = true)
 	private String serial;
 	@Enumerated(EnumType.STRING)
 	private DroneModel model;
@@ -32,7 +35,7 @@ public class Drone {
 	private LoadState state;
 
     @OneToMany(mappedBy = "drone", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Medicine> medicines;
+	private List<Medication> medications = new ArrayList<>();
 
     public Drone() {
     	super();
@@ -47,11 +50,11 @@ public class Drone {
 		this.state = state;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -95,12 +98,12 @@ public class Drone {
 		this.state = state;
 	}
 
-	public Set<Medicine> getMedicines() {
-		return medicines;
+	public List<Medication> getMedications() {
+		return medications;
 	}
 
-	public void setMedicines(Set<Medicine> medicines) {
-		this.medicines = medicines;
+	public void setMedications(List<Medication> medications) {
+		this.medications = medications;
 	}
 
 }

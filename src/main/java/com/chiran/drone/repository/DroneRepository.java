@@ -8,4 +8,6 @@ import com.chiran.drone.entities.Drone;
 @Repository
 public interface DroneRepository extends CrudRepository<Drone, Long> {
 
+	Drone findBySerial(String serial);
+
 }

@@ -9,28 +9,31 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "medicine")
-public class Medicine {
+@Table(name = "medication")
+public class Medication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
-	private int weight;
+	private float weight;
 	private String code;
 	private String image;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "drone_id", nullable = false)
+    @JsonIgnore
 	private Drone drone;
 
-    public Medicine() {
+    public Medication() {
     	super();
     }
 
-	public Medicine(String name, int weight, String code, String image, Drone drone) {
+	public Medication(String name, float weight, String code, String image, Drone drone) {
 		this.name = name;
 		this.weight = weight;
 		this.code = code;
@@ -38,11 +41,11 @@ public class Medicine {
 		this.drone = drone;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -54,11 +57,11 @@ public class Medicine {
 		this.name = name;
 	}
 
-	public int getWeight() {
+	public float getWeight() {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
+	public void setWeight(float weight) {
 		this.weight = weight;
 	}
 
