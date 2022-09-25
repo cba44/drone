@@ -1,6 +1,7 @@
 package com.chiran.drone.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,43 +12,60 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chiran.drone.dto.AvailableDroneDTO;
+import com.chiran.drone.dto.DroneDTO;
+import com.chiran.drone.dto.DroneMedicationDTO;
 import com.chiran.drone.entities.Drone;
 import com.chiran.drone.entities.Medication;
 import com.chiran.drone.service.DroneService;
+import com.chiran.drone.utils.Mapper;
 
 @RestController
 @RequestMapping("/api/v1")
 public class DroneController {
 
 	private final DroneService droneService;
+	private final Mapper mapper;
 
-	public DroneController(DroneService droneService) {
+	public DroneController(DroneService droneService, Mapper mapper) {
 		this.droneService = droneService;
+		this.mapper = mapper;
 	}
 
 	@PostMapping("/drones")
-	public ResponseEntity<Drone> registerDrone(@RequestBody Drone drone) {
-		return new ResponseEntity<Drone>(droneService.registerDrone(drone), HttpStatus.CREATED);
+	public ResponseEntity<DroneDTO> registerDrone(@RequestBody DroneDTO droneDTO) {
+		Drone drone = droneService.registerDrone(mapper.toDrone(droneDTO));
+		return new ResponseEntity<DroneDTO>(mapper.toDroneDTO(drone), HttpStatus.CREATED);
 	}
 
-	@PostMapping("/drones/medications/{serial}")
-	public ResponseEntity<List<Medication>> loadMedicineToDrone(@PathVariable String serial, @RequestBody List<Medication> medications) {
-		return new ResponseEntity<List<Medication>>(droneService.loadMedicineToDrone(serial, medications), HttpStatus.CREATED);
+	@PostMapping("/drones/medications")
+	public ResponseEntity<DroneMedicationDTO> loadMedicineToDrone(@RequestBody DroneMedicationDTO droneMedicationDTO) {
+		String serial = droneMedicationDTO.getSerial();
+		List<Medication> medications = droneMedicationDTO.getMedications().stream().map(med -> mapper.toMedication(med)).collect(Collectors.toList());
+		medications = droneService.loadMedicineToDrone(serial, medications);
+		droneMedicationDTO.getMedications().clear();
+		droneMedicationDTO.setMedications(medications.stream().map(med -> mapper.toMedicationDTO(med)).collect(Collectors.toList()));
+		return new ResponseEntity<DroneMedicationDTO>(droneMedicationDTO, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/drones/medications/{serial}")
-	public List<Medication> loadedMedicationsForDrone(@PathVariable String serial) {
-		return droneService.getMedicationForDrone(serial);
+	public ResponseEntity<DroneMedicationDTO> loadedMedicationsForDrone(@PathVariable String serial) {
+		List<Medication> medicationForDrone = droneService.getMedicationForDrone(serial);
+		DroneMedicationDTO droneMedicationDTO = new DroneMedicationDTO(serial, medicationForDrone.stream()
+				.map(med -> mapper.toMedicationDTO(med)).collect(Collectors.toList()));
+		return ResponseEntity.ok(droneMedicationDTO);
 	}
 
 	@GetMapping("/drones/available")
-	public List<Drone> getAvailableDrones() {
-		//TODO implement this
-		return null;
+	public ResponseEntity<AvailableDroneDTO> getAvailableDrones() {
+		List<Drone> availableDrones = droneService.getAvailableDrones();
+		AvailableDroneDTO availableDroneDTO = new AvailableDroneDTO();
+		availableDroneDTO.setDrones(availableDrones.stream().map(drn -> mapper.toDroneDTO(drn)).collect(Collectors.toList()));
+		return ResponseEntity.ok(availableDroneDTO);
 	}
 
 	@GetMapping("/drones/battery/{serial}")
-	public ResponseEntity<Byte> getBatteryLevel(@PathVariable String serial) {
+	public ResponseEntity<Integer> getBatteryLevel(@PathVariable String serial) {
 		return ResponseEntity.ok(droneService.getBatteryLevel(serial));
 	}
 

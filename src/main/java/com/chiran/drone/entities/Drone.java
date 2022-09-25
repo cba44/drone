@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "drone")
@@ -24,13 +23,13 @@ public class Drone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 100)
+
     @Column(unique = true)
 	private String serial;
 	@Enumerated(EnumType.STRING)
 	private DroneModel model;
-	private float weightLimit;
-	private byte batteryCapacity;
+	private double weightLimit;
+	private int batteryCapacity;
 	@Enumerated(EnumType.STRING)
 	private LoadState state;
 
@@ -41,8 +40,7 @@ public class Drone {
     	super();
     }
 
-	public Drone(@Size(max = 100) String serial, DroneModel model, float weightLimit, byte batteryCapacity,
-			LoadState state) {
+	public Drone(String serial, DroneModel model, double weightLimit, int batteryCapacity, LoadState state) {
 		this.serial = serial;
 		this.model = model;
 		this.weightLimit = weightLimit;
@@ -74,19 +72,19 @@ public class Drone {
 		this.model = model;
 	}
 
-	public float getWeightLimit() {
+	public double getWeightLimit() {
 		return weightLimit;
 	}
 
-	public void setWeightLimit(float weightLimit) {
+	public void setWeightLimit(double weightLimit) {
 		this.weightLimit = weightLimit;
 	}
 
-	public byte getBatteryCapacity() {
+	public int getBatteryCapacity() {
 		return batteryCapacity;
 	}
 
-	public void setBatteryCapacity(byte batteryCapacity) {
+	public void setBatteryCapacity(int batteryCapacity) {
 		this.batteryCapacity = batteryCapacity;
 	}
 

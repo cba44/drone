@@ -20,7 +20,7 @@ public class Medication {
     private Long id;
 
     private String name;
-	private float weight;
+	private double weight;
 	private String code;
 	private String image;
 
@@ -33,7 +33,14 @@ public class Medication {
     	super();
     }
 
-	public Medication(String name, float weight, String code, String image, Drone drone) {
+    public Medication(String name, double weight, String code, String image) {
+		this.name = name;
+		this.weight = weight;
+		this.code = code;
+		this.image = image;
+	}
+
+	public Medication(String name, double weight, String code, String image, Drone drone) {
 		this.name = name;
 		this.weight = weight;
 		this.code = code;
@@ -57,11 +64,11 @@ public class Medication {
 		this.name = name;
 	}
 
-	public float getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(float weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
