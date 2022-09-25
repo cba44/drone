@@ -3,6 +3,8 @@ package com.chiran.drone.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +35,13 @@ public class DroneController {
 	}
 
 	@PostMapping("/drones")
-	public ResponseEntity<DroneDTO> registerDrone(@RequestBody DroneDTO droneDTO) {
+	public ResponseEntity<DroneDTO> registerDrone(@Valid @RequestBody DroneDTO droneDTO) {
 		Drone drone = droneService.registerDrone(mapper.toDrone(droneDTO));
 		return new ResponseEntity<DroneDTO>(mapper.toDroneDTO(drone), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/drones/medications")
-	public ResponseEntity<DroneMedicationDTO> loadMedicineToDrone(@RequestBody DroneMedicationDTO droneMedicationDTO) {
+	public ResponseEntity<DroneMedicationDTO> loadMedicineToDrone(@Valid @RequestBody DroneMedicationDTO droneMedicationDTO) {
 		String serial = droneMedicationDTO.getSerial();
 		List<Medication> medications = droneMedicationDTO.getMedications().stream().map(med -> mapper.toMedication(med)).collect(Collectors.toList());
 		medications = droneService.loadMedicineToDrone(serial, medications);

@@ -8,6 +8,7 @@ import com.chiran.drone.entities.Drone;
 import com.chiran.drone.entities.DroneModel;
 import com.chiran.drone.entities.LoadState;
 import com.chiran.drone.entities.Medication;
+import com.chiran.drone.exception.WrongEnumException;
 
 @Component
 public class Mapper {
@@ -18,8 +19,14 @@ public class Mapper {
 	}
 
 	public Drone toDrone(DroneDTO droneDTO) {
-		return new Drone(droneDTO.getSerial(), DroneModel.valueOf(droneDTO.getModel().toUpperCase()), droneDTO.getWeightLimit(),
+		Drone drone = null;
+		try {
+		drone = new Drone(droneDTO.getSerial(), DroneModel.valueOf(droneDTO.getModel().toUpperCase()), droneDTO.getWeightLimit(),
 				droneDTO.getBatteryCapacity(), LoadState.valueOf(droneDTO.getState().toUpperCase()));
+		} catch(IllegalArgumentException e) {
+			throw new WrongEnumException("Wrong model or state value");
+		}
+		return drone;
 	}
 
 	public MedicationDTO toMedicationDTO(Medication medication) {
