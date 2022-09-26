@@ -23,18 +23,18 @@ public class DataInitializer implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Drone drone1 = new Drone("serial1", DroneModel.CRUISERWEIGHT, 300.0f, 45, LoadState.IDLE);
+		Drone drone1 = new Drone("serial1", DroneModel.CRUISERWEIGHT, 500.0f, 45, LoadState.IDLE);
 		droneRepository.save(drone1);
-		Drone drone2 = new Drone("serial2", DroneModel.CRUISERWEIGHT, 300.0f, 45, LoadState.IDLE);
+		Drone drone2 = new Drone("serial2", DroneModel.CRUISERWEIGHT, 500.0f, 45, LoadState.IDLE);
 		droneRepository.save(drone2);
 
-		Medication med1 = new Medication("medicine1", 200, "Code123", "url1", drone1);
+		Medication med1 = new Medication("medicine1", 50, "MEDA", "url1", drone1);
 		medicationRepository.save(med1);
-		Medication med2 = new Medication("medicine2", 200, "Code123", "url2", drone1);
+		Medication med2 = new Medication("medicine2", 10, "MEDB", "url2", drone1);
 		medicationRepository.save(med2);
-		Medication med3 = new Medication("medicine3", 200, "Code123", "url3", drone2);
+		Medication med3 = new Medication("medicine3", 60, "MEDC", "url3", drone2);
 		medicationRepository.save(med3);
-		Medication med4 = new Medication("medicine4", 200, "Code123", "url4", drone2);
+		Medication med4 = new Medication("medicine4", 70, "MEDD", "url4", drone2);
 		medicationRepository.save(med4);
 
 	}

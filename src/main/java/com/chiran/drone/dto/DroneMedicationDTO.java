@@ -2,16 +2,19 @@ package com.chiran.drone.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 public class DroneMedicationDTO {
 
 	private String serial;
+	@Valid
 	private List<MedicationDTO> medications;
 
 	public DroneMedicationDTO() {
 		super();
 	}
 
-	public DroneMedicationDTO(String serial, List<MedicationDTO> medications) {
+	public DroneMedicationDTO(String serial, @Valid List<MedicationDTO> medications) {
 		super();
 		this.serial = serial;
 		this.medications = medications;

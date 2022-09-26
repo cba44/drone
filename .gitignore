@@ -31,4 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-drone_app.log
+
+drone_app.lo*
