@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chiran.drone.dto.AvailableDroneDTO;
+import com.chiran.drone.dto.BatteryLevelDTO;
 import com.chiran.drone.dto.DroneDTO;
 import com.chiran.drone.dto.DroneMedicationDTO;
 import com.chiran.drone.entities.Drone;
@@ -67,8 +68,8 @@ public class DroneController {
 	}
 
 	@GetMapping("/drones/battery/{serial}")
-	public ResponseEntity<Integer> getBatteryLevel(@PathVariable String serial) {
-		return ResponseEntity.ok(droneService.getBatteryLevel(serial));
+	public ResponseEntity<BatteryLevelDTO> getBatteryLevel(@PathVariable String serial) {
+		return ResponseEntity.ok(new BatteryLevelDTO(serial, droneService.getBatteryLevel(serial)));
 	}
 
 }
