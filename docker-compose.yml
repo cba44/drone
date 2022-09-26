@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: dronedb
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: demo
+  drone_service:
+    build: .
+    ports:
+      - 7575:8080
+    depends_on:
+      - mysqldb
+    environment:
+       - SPRING_PROFILES_ACTIVE=docker
