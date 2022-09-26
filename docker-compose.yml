@@ -8,6 +8,7 @@ services:
       MYSQL_DATABASE: dronedb
       MYSQL_USER: demo
       MYSQL_PASSWORD: demo
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
   drone_service:
     build: .
     ports:
